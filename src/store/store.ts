@@ -1,6 +1,6 @@
 import {create} from 'zustand';
 // @ts-nocheck
-import {evaluate, MathExpression, string} from 'mathjs';
+import {evaluate} from 'mathjs';
 
 const useStore = create(set => ({
   equation: '',
