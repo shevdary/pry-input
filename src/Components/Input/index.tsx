@@ -3,9 +3,10 @@
 import React, { useState, useMemo, useRef } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import { Space,Card } from 'antd';
-import useStore from '../store/store';
-import { useGetValues } from '../services/formulaService';
+import useStore from '../../store/store';
+import { useGetValues } from '../../services/formulaService';
 import { debounce } from 'lodash';
+import MultiValueRemove from '../MultiValueRemove'
 
 const InputComponent = () => {
   const result = useStore((state) => state.result);
@@ -38,7 +39,7 @@ const InputComponent = () => {
     }, fetchDelay);
   }, [fetchDelay, mutation, setVariables]);
 
-  const handleInputChange = (value, actionMeta) => {
+  const handleInputChange = (value) => {
     const isAlphabetic = /[a-zA-Z]+$/.test(value);
     const hasMathSymbols = /[+\-*/=]/.test(value);
     let updatedWord = null;
@@ -62,10 +63,15 @@ const InputComponent = () => {
   };
 
   const onBlur = () => {
-    setVal((prevVal,) => [...prevVal, {label: inputValue, value: inputValue}]);
+    if (!!inputValue.length) {
+      setVal((prevVal,) => [...prevVal, {label: inputValue, value: inputValue}]);
 
-    setEquation(!!val.length ? [...val, {label: inputValue, value: inputValue}]: [{label: inputValue, value: inputValue}])
-    calculateResult()
+      setEquation(!!val.length ? [...val, {label: inputValue, value: inputValue}] : [{
+        label: inputValue,
+        value: inputValue
+      }])
+      calculateResult()
+    }
   }
 
   return (
@@ -77,6 +83,7 @@ const InputComponent = () => {
               <CreatableSelect
                 isMulti
                 value={val}
+                components={{MultiValueRemove}}
                 onChange={onChange}
                 inputValue={inputValue}
                 menuIsOpen={isOpenMenu}

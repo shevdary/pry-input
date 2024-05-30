@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { QueryClient, QueryClientProvider } from 'react-query'
-import InputComponent from "./Input";
+import InputComponent from "./Components/Input";
 
 const queryClient = new QueryClient()
 
